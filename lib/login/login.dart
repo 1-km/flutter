@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Sign in with Email',
                       style: TextStyle(
+                        fontSize: 15,
                         color: Color(0xFFD9D9D9),
                         decoration: TextDecoration.underline,
                         decorationColor: Color(0xFFD9D9D9), // 밑줄 색상 설정

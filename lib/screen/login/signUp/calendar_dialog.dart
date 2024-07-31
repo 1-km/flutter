@@ -8,13 +8,12 @@ class CalendarDialog extends StatelessWidget {
   const CalendarDialog({
     required this.initialDate,
     required this.onDateSelected,
-    Key? key,
-  }) : super(key: key);
-
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    List<DateTime?> _selectedDate = [initialDate];
+    List<DateTime?> selectedDate = [initialDate];
 
     return Stack(
       children: [
@@ -26,7 +25,7 @@ class CalendarDialog extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.9,
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
@@ -36,10 +35,18 @@ class CalendarDialog extends StatelessWidget {
                 children: [
                   CalendarDatePicker2(
                     config: CalendarDatePicker2Config(
-                      selectedDayHighlightColor:Color(0xFF007AFF),
-                      weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                      selectedDayHighlightColor: const Color(0xFF007AFF),
+                      weekdayLabels: [
+                        'Sun',
+                        'Mon',
+                        'Tue',
+                        'Wed',
+                        'Thu',
+                        'Fri',
+                        'Sat'
+                      ],
                       weekdayLabelTextStyle: TextStyle(
-                        color: Color(0xFF3C3C43).withOpacity(0.3),
+                        color: const Color(0xFF3C3C43).withOpacity(0.3),
                         fontWeight: FontWeight.bold,
                       ),
                       firstDayOfWeek: 1,
@@ -61,10 +68,10 @@ class CalendarDialog extends StatelessWidget {
                         color: Colors.grey,
                       ),
                     ),
-                    value: _selectedDate,
+                    value: selectedDate,
                     onValueChanged: (dates) {
-                      if(dates.isNotEmpty && dates[0] != null) {
-                        onDateSelected(dates[0]!);
+                      if (dates.isNotEmpty) {
+                        onDateSelected(dates[0]);
                       }
                     },
                   ),

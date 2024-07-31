@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'calendar_dialog.dart';
 
 class DateSelector extends StatefulWidget {
@@ -24,7 +24,8 @@ class DateSelectorState extends State<DateSelector> {
       context: context,
       barrierDismissible: true,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pageBuilder: (BuildContext buildContext, Animation<double> animation, Animation<double> secondaryAnimation) {
+      pageBuilder: (BuildContext buildContext, Animation<double> animation,
+          Animation<double> secondaryAnimation) {
         return CalendarDialog(
           initialDate: _selectedDate[0],
           onDateSelected: (date) {
@@ -49,13 +50,13 @@ class DateSelectorState extends State<DateSelector> {
             Text(
               widget.text,
               style: TextStyle(
-                color: Color(0xFFD9D9D9).withOpacity(0.5),
+                color: const Color(0xFFD9D9D9).withOpacity(0.5),
                 fontSize: 28,
               ),
             ),
             GestureDetector(
               onTap: _showDatePicker,
-              child: Icon(
+              child: const Icon(
                 Icons.expand_more,
                 color: Colors.white,
                 size: 50.0,
@@ -63,12 +64,12 @@ class DateSelectorState extends State<DateSelector> {
             ),
           ],
         ),
-        Container(
-          margin: EdgeInsets.only(top: 5),
-          height: 2,
-          color: Colors.white,
-          width: 150, // 텍스트와 아이콘이 포함될 수 있는 너비로 설정
-        ),
+        VxBox()
+            .height(2)
+            .width(150)
+            .white
+            .margin(const EdgeInsets.only(top: 5))
+            .make(),
       ],
     );
   }

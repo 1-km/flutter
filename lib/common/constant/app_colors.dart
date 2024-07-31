@@ -6,8 +6,8 @@ class AppColors {
   static const Color grey = Color.fromARGB(255, 139, 139, 139);
   static const Color middleGrey = Color.fromARGB(255, 171, 171, 171);
   static const Color brightGrey = Color.fromARGB(255, 228, 228, 228);
-  static const Color blueGreen = Color.fromARGB(255, 0, 185, 206);
-  static const Color green = Color.fromARGB(255, 132, 206, 191);
+  static const Color blueGreen = Color.fromARGB(255, 0, 0, 0);
+  static const Color green = Color(0xFFC2FF49);
   static const Color darkGreen = Color.fromARGB(255, 101, 160, 149);
   static const Color blue = Color.fromARGB(255, 0, 125, 203);
   static const Color darkBlue = Color.fromARGB(255, 0, 70, 111);

@@ -2,11 +2,11 @@ import 'package:military1km/common/common.dart';
 import 'package:flutter/material.dart';
 
 enum RoundButtonTheme {
-  blue(AppColors.blue, Colors.white, AppColors.blue,
+  green(AppColors.green, Colors.black, AppColors.green,
       backgroundColorProvider: blueColorProvider),
   whiteWithBlueBorder(Colors.white, AppColors.darkBlue, AppColors.blue,
       backgroundColorProvider: blueColorProvider),
-  blink(AppColors.blue, Colors.white, Colors.black,
+  blink(AppColors.blue, Color.fromARGB(255, 134, 98, 98), Colors.black,
       backgroundColorProvider: blueColorProvider);
 
   const RoundButtonTheme(

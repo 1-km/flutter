@@ -45,13 +45,16 @@ ThemeData lightTheme = ThemeData(
 
 const darkColorSeed = Color(0xbcd5ff7e);
 ThemeData darkTheme = ThemeData(
-    useMaterial3: true,
-    visualDensity: VisualDensity.adaptivePlatformDensity,
+  useMaterial3: true,
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  brightness: Brightness.dark,
+  scaffoldBackgroundColor: Colors.black,
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: CustomTheme.dark.appColors.seedTextColor,
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: AppColors.veryDarkGrey,
-    // textTheme: GoogleFonts.nanumMyeongjoTextTheme(
-    //   ThemeData(brightness: Brightness.dark).textTheme,
-    // ),
-    colorScheme: ColorScheme.fromSeed(
-        seedColor: CustomTheme.dark.appColors.seedColor,
-        brightness: Brightness.dark));
+  ),
+  splashColor: Colors.transparent,
+  highlightColor: Colors.transparent,
+  appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.black, scrolledUnderElevation: 0),
+);

@@ -15,3 +15,4 @@ const width5 = Width(5);
 const width10 = Width(10);
 const width20 = Width(20);
 const width30 = Width(30);
+const width50 = Width(50);

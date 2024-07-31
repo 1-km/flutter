@@ -8,13 +8,13 @@ typedef ColorProvider = Color Function();
 abstract class AbstractThemeColors {
   const AbstractThemeColors();
 
-  Color get seedColor => const Color(0xFF69AEFF);
+  Color get seedColor => const Color.fromARGB(255, 255, 255, 255);
 
-  Color get seedBgColor => const Color(0xFF2E8EFF);
+  Color get seedBgColor => const Color(0xFFC2FF49);
 
   Color get seedButtonColor => const Color(0xFF2E8EFF);
 
-  Color get seedTextColor => const Color.fromARGB(255, 164, 203, 248);
+  Color get seedTextColor => const Color.fromARGB(255, 255, 255, 255);
 
   Color get veryBrightGrey => AppColors.brightGrey;
 

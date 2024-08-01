@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:military1km/common/common.dart';
 import 'package:military1km/screen/login/signUp/s_sign_up.dart';
+import 'package:military1km/screen/login/auth_service.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
 Widget buildSocialLoginButton({
@@ -40,7 +42,15 @@ Widget buildSocialLoginButton({
   ).pSymmetric(v: 8);
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  late AuthService _authService;
+
+  @override
+  void initState() {
+    super.initState();
+    _authService = AuthService(ref);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,21 +65,21 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 buildSocialLoginButton(
-                  onTap: () {},
+                  onTap: () => _authService.signInWithGoogle(context),
                   buttonColor: const Color(0xFFFFFFFF),
                   imagePath: 'assets/image/socialLogin/google.png',
-                  text: 'Sign in with Naver',
+                  text: 'Sign in with google',
                   textColor: Colors.black,
                 ),
                 buildSocialLoginButton(
-                  onTap: () {},
+                  onTap: () => _authService.signInWithKaKao(context),
                   buttonColor: const Color(0xFFFEE500),
                   imagePath: 'assets/image/socialLogin/kakao.png',
-                  text: 'Sign in with Naver',
+                  text: 'Sign in with kakao',
                   textColor: Colors.black,
                 ),
                 buildSocialLoginButton(
-                  onTap: () {},
+                  onTap: () => _authService.signInWithNaver(context),
                   buttonColor: const Color(0xFF03C75A),
                   imagePath: 'assets/image/socialLogin/naver.png',
                   text: 'Sign in with Naver',

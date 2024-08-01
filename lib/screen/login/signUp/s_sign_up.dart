@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nav/nav.dart';
 import 'package:military1km/common/common.dart';
 import 'package:military1km/screen/main/s_main.dart';
+import 'package:military1km/screen/login/s_login.dart';
+import 'package:military1km/common/model/login_platform.dart';
 
 import 'choice_army_screen.dart';
 import 'certification.dart';
@@ -8,14 +12,14 @@ import 'password_input.dart';
 import 'input_screen.dart';
 import 'military_service_dates.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
@@ -28,12 +32,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
     const ServiceDateScreen(),
   ];
 
+  final List<Widget> _oauth2LoginPages = [
+    InputScreen(title: '닉네임을 알려주세요:)', hintText: '동해지킴이'),
+    ChoiceInputPage(),
+    InputScreen(title: '현재 소속되어 있는\n부대를 알려주세요.', hintText: '알파부대'),
+    ServiceDateScreen(),
+  ];
+
   void _nextPage() {
     setState(() {
-      if (_currentIndex == 6) {
-        Nav.push(const MainScreen());
-      } else if (_currentIndex < _pages.length - 1) {
+      if (_currentIndex < (_isEmailLogin() ? _pages.length : _oauth2LoginPages.length) - 1) {
         _currentIndex++;
+      } else {
+        Nav.push(const MainScreen());
       }
     });
   }
@@ -47,15 +58,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   int _getIndicatorIndex() {
-    if (_currentIndex < 4) {
-      return 0;
-    } else if (_currentIndex == 4) {
-      return 1;
-    } else if (_currentIndex == 5) {
-      return 2;
+    if (_isEmailLogin()) {
+      if (_currentIndex < 4) {
+        return 0;
+      } else if (_currentIndex == 4) {
+        return 1;
+      } else if (_currentIndex == 5) {
+        return 2;
+      } else {
+        return 3;
+      }
     } else {
-      return 3;
+      int totalSteps = _oauth2LoginPages.length;
+      if (_currentIndex < totalSteps) {
+        return _currentIndex;
+      } else {
+        return totalSteps - 1;
+      }
     }
+  }
+
+  bool _isEmailLogin() {
+    final loginPlatform = ref.read(loginPlatformProvider);
+    return loginPlatform == LoginPlatform.none;
+  }
+
+  void _goToLoginPage() {
+    ref.read(loginPlatformProvider.notifier).state = LoginPlatform.none;
+    Navigator.pop(context); // 로그인 페이지로 이동
   }
 
   @override
@@ -70,7 +100,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   color: Colors.white,
                   size: 40,
                 ),
-          onPressed: _getIndicatorIndex() == 1 ? _previousPage : _previousPage,
+          onPressed: _getIndicatorIndex() != 0 ? _previousPage : _goToLoginPage,
         ),
         title: Row(
           mainAxisSize: MainAxisSize.min,
@@ -106,7 +136,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(child: _pages[_currentIndex]),
+            Expanded(child: _isEmailLogin() ? _pages[_currentIndex] : _oauth2LoginPages[_currentIndex]),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
@@ -117,7 +147,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     fixedSize: const Size(400, 50)),
-                child: Text(_getIndicatorIndex() == 3 ? '완료' : '다음',
+                child: Text(
+                    _currentIndex == (_isEmailLogin() ? _pages.length : _oauth2LoginPages.length) - 1
+                        ? '완료'
+                        : '다음',
                     style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,

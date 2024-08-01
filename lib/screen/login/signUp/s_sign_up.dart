@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nav/nav.dart';
 import 'package:military1km/common/common.dart';
-import 'package:military1km/screen/main/s_main.dart';
 import 'package:military1km/screen/login/s_login.dart';
 import 'package:military1km/common/model/login_platform.dart';
 
@@ -44,7 +43,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       if (_currentIndex < (_isEmailLogin() ? _pages.length : _oauth2LoginPages.length) - 1) {
         _currentIndex++;
       } else {
-        Nav.push(const MainScreen());
+        Nav.push(const LoginScreen());
       }
     });
   }

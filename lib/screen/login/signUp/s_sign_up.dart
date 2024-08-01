@@ -43,6 +43,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       if (_currentIndex < (_isEmailLogin() ? _pages.length : _oauth2LoginPages.length) - 1) {
         _currentIndex++;
       } else {
+        ref.read(loginPlatformProvider.notifier).state = LoginPlatform.none;
         Nav.push(const LoginScreen());
       }
     });

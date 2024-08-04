@@ -38,7 +38,7 @@ class _StartScreenState extends State<StartScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            height: 500,
+            height: 400,
             child: PageView(
               controller: _pageController,
               onPageChanged: (value) {

@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:military1km/common/common.dart';
 
 class PasswordInput extends StatelessWidget {
-  const PasswordInput({super.key});
+  final ValueChanged<String> onPasswordChanged;
+  const PasswordInput({super.key,required this.onPasswordChanged});
+
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _controller = TextEditingController();
+
+    _controller.addListener(() {
+      onPasswordChanged(_controller.text);
+      print('비밀번호: $_controller.text');
+    });
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -17,6 +26,7 @@ class PasswordInput extends StatelessWidget {
             .make(),
         const SizedBox(height: 100),
         TextField(
+          controller: _controller,
           decoration: InputDecoration(
             hintText: 'asdf1234@team.alpha',
             hintStyle: TextStyle(

@@ -1,27 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:military1km/common/common.dart';
 import 'date_selector.dart';
+import 's_sign_up.dart';
 
-class ServiceDateScreen extends StatefulWidget {
+class ServiceDateScreen extends ConsumerStatefulWidget {
   const ServiceDateScreen({super.key});
 
   @override
-  State<ServiceDateScreen> createState() => _ServiceDateScreenState();
+  ConsumerState<ServiceDateScreen> createState() => _ServiceDateScreenState();
 }
 
-class _ServiceDateScreenState extends State<ServiceDateScreen> {
+class _ServiceDateScreenState extends ConsumerState<ServiceDateScreen> {
   DateTime? enlistmentDate;
   DateTime? dischargeDate;
   bool isAlarmOn = false;
 
-  void _updateDate(String type, DateTime? date) {
+  void _onEnlistmentDateSelected(DateTime? date) {
     setState(() {
-      if (type == '입대일') {
-        enlistmentDate = date;
-      } else {
-        dischargeDate = date;
+      enlistmentDate = date;
+      if(enlistmentDate != null) {
+        dischargeDate = _calculateDischargeDate(enlistmentDate!);
+        ref.read(enlistmentDateProvider.notifier).state = enlistmentDate!;
+        ref.read(dischargeDateProvider.notifier).state = dischargeDate!;
       }
     });
+  }
+
+  void _onDischargeDateSelected(DateTime? date) {
+    setState(() {
+      dischargeDate = date;
+    });
+  }
+
+
+  DateTime _calculateDischargeDate(DateTime enlistmentDate) {
+    final selectedMilitary = ref.read(selectedMilitaryProvider);
+    int serviceDays = 548;
+    switch(selectedMilitary) {
+      case '육군' :
+        serviceDays = 548;
+        break;
+      case '해군' :
+        serviceDays = 607;
+        break;
+      case '공군' :
+        serviceDays = 637;
+        break;
+    }
+    return enlistmentDate.add(Duration(days: serviceDays));
   }
 
   void _toggleAlarm(bool value) {
@@ -43,8 +70,8 @@ class _ServiceDateScreenState extends State<ServiceDateScreen> {
             DateSelector(
               text: enlistmentDate != null
                   ? DateFormat('yy.MM.dd').format(enlistmentDate!)
-                  : '입대일',
-              onDateSelected: (date) => _updateDate('입대일', date),
+                  :'입대일',
+              onDateSelected: _onEnlistmentDateSelected,
             ),
             width20,
             '~'
@@ -58,7 +85,7 @@ class _ServiceDateScreenState extends State<ServiceDateScreen> {
               text: dischargeDate != null
                   ? DateFormat('yy.MM.dd').format(dischargeDate!)
                   : '전역일',
-              onDateSelected: (date) => _updateDate('전역일', date),
+              onDateSelected: _onDischargeDateSelected,
             ),
           ],
         ),

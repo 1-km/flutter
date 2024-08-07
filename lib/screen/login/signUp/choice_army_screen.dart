@@ -1,46 +1,69 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:military1km/common/common.dart';
+import 's_sign_up.dart';
 
-class ChoiceInputPage extends StatelessWidget {
+class ChoiceInputPage extends ConsumerWidget {
   const ChoiceInputPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Column(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedMilitary = ref.watch(selectedMilitaryProvider);
+
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Height(100),
-        Text(
+        const Height(20),
+        const Text(
           '어디를 지키고 있나요?',
           style: TextStyle(
             color: Colors.white,
             fontSize: 30,
           ),
         ),
-        Height(100),
+        const Height(20),
         Center(
-          child: ArmyChoiceCard(
+          child: GestureDetector(
+            onTap: () {
+              ref.read(selectedMilitaryProvider.notifier).state = '육군';
+              },
+    child : ArmyChoiceCard(
               text: '강한친구',
               military: ' 육군',
-              image: 'assets/image/signUp/army.png'),
+              image: 'assets/image/signUp/army.png',
+              isSelected: selectedMilitary == '육군'),
         ),
-        SizedBox(
+    ),
+        const SizedBox(
           height: 15,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ChoiceCard(
+            GestureDetector(
+  onTap: () {
+    ref.read(selectedMilitaryProvider.notifier).state = '해군';
+  },
+  child : ChoiceCard(
                 text: '바다로, 세계로!',
                 military: '\n해군',
-                image: 'assets/image/signUp/navy.png'),
-            SizedBox(
+                image: 'assets/image/signUp/navy.png',
+      isSelected: selectedMilitary == '해군'),
+  ),
+            const SizedBox(
               width: 15,
             ),
-            ChoiceCard(
+            GestureDetector(
+  onTap: (){
+    ref.read(selectedMilitaryProvider.notifier).state = '공군';
+  },
+    child: ChoiceCard(
                 text: '가장 높은 힘!',
                 military: '\n공군',
-                image: 'assets/image/signUp/air_force.png'),
+                image: 'assets/image/signUp/air_force.png',
+        isSelected: selectedMilitary == '공군'),
+  ),
           ],
         ),
       ],
@@ -52,12 +75,14 @@ class ChoiceCard extends StatelessWidget {
   final String text;
   final String military;
   final String image;
+  final bool isSelected;
 
   const ChoiceCard(
       {super.key,
       required this.text,
       required this.military,
-      required this.image});
+      required this.image,
+      required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +90,7 @@ class ChoiceCard extends StatelessWidget {
       width: 167.5,
       height: 170,
       decoration: BoxDecoration(
-        color: const Color(0xFF898A8D),
+        color: isSelected ? Colors.white : const Color(0xFF898A8D),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -123,12 +148,14 @@ class ArmyChoiceCard extends StatelessWidget {
   final String text;
   final String military;
   final String image;
+  final bool isSelected;
 
   const ArmyChoiceCard(
       {super.key,
       required this.text,
       required this.military,
-      required this.image});
+      required this.image,
+      required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +163,7 @@ class ArmyChoiceCard extends StatelessWidget {
       width: 350,
       height: 170,
       decoration: BoxDecoration(
-        color: const Color(0xFF898A8D),
+        color: isSelected ? Colors.white : const Color(0xFF898A8D),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(

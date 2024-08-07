@@ -14,6 +14,7 @@ void main() async {
   // 내부저장소 세팅
   await AppPreferences.init();
   await Hive.initFlutter();
+  await Hive.openBox('tokens');
 
   KakaoSdk.init(
     nativeAppKey: dotenv.get("KAKAO_NATIVE_APP_KEY"),

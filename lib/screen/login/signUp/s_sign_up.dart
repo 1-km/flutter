@@ -53,27 +53,28 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
       if(emailExists){
         setState(() {
-          _currentIndex = 1;
+          _currentIndex = 0;
         });
       }
       else {
-        _processSignup();
+        await _processSignup();
       }
     } else if(_currentIndex == 1 && _isEmailLogin()) {
       final password = ref.read(passwordProvider);
+      final email = ref.read(emailProvider);
+      final bool emailExists = await _checkEmail(email);
       print('비밀번호: $password');
 
-      if(password.isNotEmpty) {
+      if(password.isNotEmpty && emailExists) {
         await _processLogin();
-      } else {
+      } else if(password.isEmpty){
         ScaffoldMessenger.of(context).showSnackBar(
           const  SnackBar(content: Text('비밀번호를 입력해주세요.')),
         );
-        setState(() {
-          _isLoading = false;
-        });
       }
-      return;
+      setState(() {
+        _isLoading = false;
+      });
     }
     else if (_currentIndex == 2 && _isEmailLogin()) {
       await _verifyCode(ref.read(emailProvider), ref.read(codeProvider));
@@ -152,7 +153,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     );
   }
 
-  void _processSignup() async {
+  Future<void> _processSignup() async {
     final email = ref.read(emailProvider);
     setState(() {
       _isLoading = true;
@@ -161,7 +162,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     setState(() {
       _isLoading = false;
     });
-    _currentIndex = 2;
+    _currentIndex = 0;
   }
   
   Future<bool> _checkEmail(String email) async {
